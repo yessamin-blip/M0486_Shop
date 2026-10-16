@@ -12,6 +12,7 @@ import utils.Constants;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -31,6 +32,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 	private JButton btnAddStock;
 	private JButton btnManageEmployees;
 	private JButton btnRemoveProduct;
+	private JButton btnExportInventory;
 	
 	
 	
@@ -130,6 +132,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(btnRemoveProduct);
 		// listen button
 		btnRemoveProduct.addActionListener(this);
+
+		// option export inventory
+		btnExportInventory = new JButton("0. Exportar inventario");
+		btnExportInventory.setHorizontalAlignment(SwingConstants.LEFT);
+		btnExportInventory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnExportInventory.setBounds(99, 290, 236, 40);
+		contentPane.add(btnExportInventory);
+		// listen button
+		btnExportInventory.addActionListener(this);
 	}
 
 	@Override
@@ -157,6 +168,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		if (e.getKeyChar() == '9') {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
 		}
+		// key 0: export inventory to a file
+		if (e.getKeyChar() == '0') {
+			this.exportInventory();
+		}
 		
 	}
 
@@ -182,7 +197,11 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 			this.openEmployeeView();
 		}
 		if (e.getSource() == btnRemoveProduct) {
-			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);				
+			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
+		}
+		// button 0: export inventory to a file
+		if (e.getSource() == btnExportInventory) {
+			this.exportInventory();
 		}
 		
 	}
@@ -222,6 +241,22 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setModal(true);
 		dialog.setVisible(true);
+	}
+
+	/**
+	 * export inventory to a file and show if it worked or not
+	 */
+	public void exportInventory() {
+		// writeInventory returns true if the file was written correctly
+		if (shop.writeInventory()) {
+			// show confirmation panel
+			JOptionPane.showMessageDialog(this, "Inventario exportado correctamente",
+					"Exportar inventario", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			// show error panel
+			JOptionPane.showMessageDialog(this, "Error al exportar el inventario",
+					"Exportar inventario", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 }
