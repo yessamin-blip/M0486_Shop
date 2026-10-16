@@ -14,7 +14,8 @@ public interface Dao {
 
 	public Employee getEmployee(int employeeId, String password);
 
-	// inventory
+	// inventario
+	// devuelve la lista de productos, no recibe nada
 	public ArrayList<Product> getInventory();
 
 	public boolean writeInventory(ArrayList<Product> inventory);
