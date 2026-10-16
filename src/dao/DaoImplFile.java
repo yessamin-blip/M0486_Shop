@@ -35,47 +35,54 @@ public class DaoImplFile implements Dao {
 	}
 
 	/**
-	 * read inventory from file
+	 * lee el inventario del fichero inputInventory.txt
 	 */
 	@Override
 	public ArrayList<Product> getInventory() {
+		
 		ArrayList<Product> inventory = new ArrayList<Product>();
 
-		// locate file, path and name
+		// busco el fichero dentro de la carpeta files del proyecto
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + "inputInventory.txt");
 
-		// wrap in proper classes, closed automatically
+		// lo abro dentro del try para que se cierre solo al acabar
 		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-			// read first line
+			
+			// leo la primera línea
 			String line = br.readLine();
 
-			// process and read next line until end of file
+			// sigo leyendo hasta que no queden líneas
 			while (line != null) {
-				// split in sections
+			
+				// separo la línea por ; para tener cada dato por separado
 				String[] sections = line.split(";");
 
 				String name = "";
 				double wholesalerPrice = 0.0;
 				int stock = 0;
 
-				// read each sections
+				// recorro cada trozo de la línea
 				for (int i = 0; i < sections.length; i++) {
-					// split data in key(0) and value(1)
+				
+					// separo por : y en la posición 1 queda el valor
 					String[] data = sections[i].split(":");
 
 					switch (i) {
 					case 0:
-						// format product name
+					
+						// el primero es el nombre del producto
 						name = data[1];
 						break;
 
 					case 1:
-						// format price
+						
+						// el segundo es el precio, lo paso a double
 						wholesalerPrice = Double.parseDouble(data[1]);
 						break;
 
 					case 2:
-						// format stock
+						
+						// el tercero es el stock, lo paso a int
 						stock = Integer.parseInt(data[1]);
 						break;
 
@@ -83,14 +90,17 @@ public class DaoImplFile implements Dao {
 						break;
 					}
 				}
-				// add product to inventory
+				
+				// creo el producto y lo añado a la lista
 				inventory.add(new Product(name, new Amount(wholesalerPrice), true, stock));
 
-				// read next line
+				// paso a la siguiente línea
 				line = br.readLine();
 			}
 
 		} catch (IOException e) {
+			
+			// si falla al leer el fichero muestro el error
 			e.printStackTrace();
 		}
 		return inventory;

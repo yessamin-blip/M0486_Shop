@@ -24,7 +24,7 @@ public class Shop {
 //	private Sale[] sales;
 	private ArrayList<Sale> sales;
 	private int numberSales;
-	// connection using files
+	// uso ficheros para el inventario
 	private Dao dao = new DaoImplFile();
 
 	final static double TAX_RATE = 1.04;
@@ -211,11 +211,13 @@ public class Shop {
 	}
 
 	/**
-	 * read inventory from dao
+	 * le pido el inventario al dao
 	 */
 	private void readInventory() {
+		// el dao me devuelve la lista de productos y la guardo en el inventario
 		this.inventory = dao.getInventory();
 		this.numberProducts = inventory.size();
+		this.showInventory();
 	}
 
 	/**
