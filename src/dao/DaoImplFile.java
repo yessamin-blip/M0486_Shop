@@ -107,40 +107,39 @@ public class DaoImplFile implements Dao {
 	}
 
 	/**
-	 * write inventory in file
+	 * escribe el inventario en el fichero inventory_fecha.txt
 	 *
-	 * @return true if file written, false if any error
+	 * @return true si se ha escrito bien, false si ha habido algún error
 	 */
 	@Override
 	public boolean writeInventory(ArrayList<Product> inventory) {
-		// define file name based on date
+		// pongo el nombre del fichero con la fecha de hoy
 		LocalDate myObj = LocalDate.now();
 		String fileName = "inventory_" + myObj.toString() + ".txt";
 
-		// locate file, path and name
+		// lo guardo en la carpeta files, igual que las ventas
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + fileName);
 
-		// wrap in proper classes, closed automatically
+		// con false si el fichero ya existe se sobrescribe
 		try (FileWriter fw = new FileWriter(f, false); PrintWriter pw = new PrintWriter(fw)) {
-			// write line by line
+			// escribo una línea por cada producto
 			int counterProduct = 1;
 			for (Product product : inventory) {
-				// format line TO BE -> 1;Product:Manzana;Stock:10;
-				StringBuilder line = new StringBuilder(
-						counterProduct + ";Product:" + product.getName() + ";Stock:" + product.getStock() + ";");
-				pw.println(line.toString());
+				// queda así: 1;Product:Manzana;Stock:10;
+				pw.println(counterProduct + ";Product:" + product.getName() + ";Stock:" + product.getStock() + ";");
 
-				// increment counter products
+				// sumo uno al contador para el siguiente producto
 				counterProduct++;
 			}
 
-			// format last line TO BE -> Total number of products:2;
+			// la última línea es el total de productos: Total number of products:2;
 			pw.println("Total number of products:" + inventory.size() + ";");
 
-			// PrintWriter does not throw, so check for errors explicitly
+			// PrintWriter no lanza excepciones, así que miro si ha habido algún error
 			return !pw.checkError();
 
 		} catch (Exception e) {
+			// si algo falla devuelvo false
 			e.printStackTrace();
 			return false;
 		}

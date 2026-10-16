@@ -221,9 +221,9 @@ public class Shop {
 	}
 
 	/**
-	 * write inventory using dao
-	 * 
-	 * @return true if exported, false if any error
+	 * le paso el inventario al dao para que lo escriba en el fichero
+	 *
+	 * @return true si se ha exportado bien, false si ha habido algún error
 	 */
 	public boolean writeInventory() {
 		return dao.writeInventory(inventory);
