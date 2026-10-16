@@ -17,6 +17,7 @@ public interface Dao {
 	// inventory
 	public ArrayList<Product> getInventory();
 
+	// recibe el inventario y devuelve true si se ha guardado bien o false si ha fallado
 	public boolean writeInventory(ArrayList<Product> inventory);
 
 	// CRUD employee
