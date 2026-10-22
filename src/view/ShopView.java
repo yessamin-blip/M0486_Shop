@@ -88,11 +88,20 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		lblShowCash.setBounds(57, 20, 236, 14);
 		contentPane.add(lblShowCash);
 		
+		// boton 0 para exportar el inventario, lo pongo el primero como en el enunciado
+		btnExportInventory = new JButton("0. Exportar inventario");
+		btnExportInventory.setHorizontalAlignment(SwingConstants.LEFT);
+		btnExportInventory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnExportInventory.setBounds(99, 40, 236, 40);
+		contentPane.add(btnExportInventory);
+		// escucho cuando se pulsa el boton
+		btnExportInventory.addActionListener(this);
+		
 		// option count cash
 		btnShowCash = new JButton("1. Contar caja");
 		btnShowCash.setHorizontalAlignment(SwingConstants.LEFT);
 		btnShowCash.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnShowCash.setBounds(99, 40, 236, 40);
+		btnShowCash.setBounds(99, 90, 236, 40);
 		contentPane.add(btnShowCash);
 		// listen button
 		btnShowCash.addActionListener(this);
@@ -101,7 +110,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		btnAddProduct = new JButton("2. Añadir producto");
 		btnAddProduct.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAddProduct.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAddProduct.setBounds(99, 90, 236, 40);
+		btnAddProduct.setBounds(99, 140, 236, 40);
 		contentPane.add(btnAddProduct);
 		// listen button
 		btnAddProduct.addActionListener(this);
@@ -110,7 +119,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		btnAddStock = new JButton("3. Añadir stock");
 		btnAddStock.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAddStock.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnAddStock.setBounds(99, 140, 236, 40);
+		btnAddStock.setBounds(99, 190, 236, 40);
 		contentPane.add(btnAddStock);
 		// listen button
 		btnAddStock.addActionListener(this);
@@ -119,7 +128,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		btnManageEmployees = new JButton("4. Gestionar empleados");
 		btnManageEmployees.setHorizontalAlignment(SwingConstants.LEFT);
 		btnManageEmployees.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnManageEmployees.setBounds(99, 190, 236, 40);
+		btnManageEmployees.setBounds(99, 240, 236, 40);
 		contentPane.add(btnManageEmployees);
 		// listen button
 		btnManageEmployees.addActionListener(this);
@@ -128,19 +137,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		btnRemoveProduct = new JButton("9. Eliminar producto");
 		btnRemoveProduct.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRemoveProduct.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnRemoveProduct.setBounds(99, 240, 236, 40);
+		btnRemoveProduct.setBounds(99, 290, 236, 40);
 		contentPane.add(btnRemoveProduct);
 		// listen button
 		btnRemoveProduct.addActionListener(this);
-
-		// option export inventory
-		btnExportInventory = new JButton("0. Exportar inventario");
-		btnExportInventory.setHorizontalAlignment(SwingConstants.LEFT);
-		btnExportInventory.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnExportInventory.setBounds(99, 290, 236, 40);
-		contentPane.add(btnExportInventory);
-		// listen button
-		btnExportInventory.addActionListener(this);
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		if (e.getKeyChar() == '9') {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
 		}
-		// key 0: export inventory to a file
+		// si pulso la tecla 0 exporto el inventario
 		if (e.getKeyChar() == '0') {
 			this.exportInventory();
 		}
@@ -199,7 +199,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		if (e.getSource() == btnRemoveProduct) {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
 		}
-		// button 0: export inventory to a file
+		// si pulso el boton 0 exporto el inventario
 		if (e.getSource() == btnExportInventory) {
 			this.exportInventory();
 		}
@@ -244,18 +244,18 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 	}
 
 	/**
-	 * export inventory to a file and show if it worked or not
+	 * exporta el inventario a un fichero y enseña si ha ido bien o no
 	 */
 	public void exportInventory() {
-		// writeInventory returns true if the file was written correctly
+		// writeInventory me devuelve true si el fichero se ha escrito bien
 		if (shop.writeInventory()) {
-			// show confirmation panel
+			// si ha ido bien enseño el mensaje de confirmacion
 			JOptionPane.showMessageDialog(this, "Inventario exportado correctamente",
-					"Exportar inventario", JOptionPane.INFORMATION_MESSAGE);
+					"Informacion", JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			// show error panel
-			JOptionPane.showMessageDialog(this, "Error al exportar el inventario",
-					"Exportar inventario", JOptionPane.ERROR_MESSAGE);
+			// si ha fallado enseño el mensaje de error
+			JOptionPane.showMessageDialog(this, "Error exportando el inventario",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
