@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import model.Amount;
 import model.Employee;
 import model.Product;
 
@@ -75,8 +76,40 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<Product> inventory = new ArrayList<Product>();
+
+		// leo todos los productos de la tabla inventory
+		String query = "select id, name, wholesalerPrice, available, stock from inventory";
+
+		// si no hay conexion devuelvo la lista vacia
+		if (connection == null) {
+			return inventory;
+		}
+
+		try (Statement st = connection.createStatement();
+				ResultSet rs = st.executeQuery(query)) {
+
+			// recorro cada fila de la tabla
+			while (rs.next()) {
+
+				// creo el producto con los datos de la fila
+				Product product = new Product(rs.getString("name"), new Amount(rs.getDouble("wholesalerPrice")),
+						rs.getBoolean("available"), rs.getInt("stock"));
+
+				// le pongo el id de la tabla para luego poder actualizarlo o borrarlo
+				product.setId(rs.getInt("id"));
+
+				inventory.add(product);
+			}
+
+		} catch (SQLException e) {
+
+			// si falla la consulta muestro el error
+			e.printStackTrace();
+		}
+
+		return inventory;
 	}
 
 	@Override
